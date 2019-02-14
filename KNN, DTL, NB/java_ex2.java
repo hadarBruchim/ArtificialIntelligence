@@ -23,27 +23,22 @@ public class java_ex2 {
 public static void main(String[] args) {
         
     try{
-        Path path = Paths.get("C:/Users/hadas/workspace/Ai_ex2/src/train.txt");
-        //Path path = Paths.get("train.txt");
+        Path path = Paths.get("train.txt");
         long lineCount = Files.lines(path).count();
         
-        File file = new File("C:/Users/hadas/workspace/Ai_ex2/src/train.txt");
-        //File file = new File("train.txt");
+        File file = new File("train.txt");
         BufferedReader buffer=new BufferedReader(new FileReader(file));
         String [][] data_train= convertFileToData(buffer,(int)lineCount);
 
         List<Attribute> listOfAttr= attribute(data_train);
         Attribute prad=listOfAttr.get(listOfAttr.size()-1);
         
-        Path path_test = Paths.get("C:/Users/hadas/workspace/Ai_ex2/src/test.txt");
-        //Path path_test = Paths.get("test.txt");
+        Path path_test = Paths.get("test.txt");
         long lineCount_test = Files.lines(path_test).count();
         
-        File file_test = new File("C:/Users/hadas/workspace/Ai_ex2/src/test.txt");
-        //File file_test = new File("test.txt");
+        File file_test = new File("test.txt");
         BufferedReader buffer_test=new BufferedReader(new FileReader(file_test));
         String [][] data_test= convertFileToData(buffer_test,(int)lineCount_test);
-       // List<String>Title= title(data_test);
         List<Attribute> listOfAttr_test= attribute(data_test);
         Attribute prad_test=listOfAttr_test.get(listOfAttr_test.size()-1);
         
@@ -51,20 +46,17 @@ public static void main(String[] args) {
         Knn knn_Algo= new Knn(listOfAttr,listOfAttr_test,prad_test,5);
         List<String>KnnResult=knn_Algo.Hamming();
         double knnAccuracy=knn_Algo.getAccuracy();
-        //System.out.println(knnAccuracy);
         
         /*Naive base*/
         NaiveBase naiveBase_algo=new NaiveBase(listOfAttr,listOfAttr_test,prad_test,prad);
         List<String>naiveResult=naiveBase_algo.calculate();
         double naiveAccuracy=naiveBase_algo.getAccuracy();
-        //System.out.println(naiveAccuracy);
         
         /*Dt*/
         Dt decisionTree_algo= new Dt(listOfAttr,listOfAttr_test,prad_test,prad);
         Node buildDtTree=decisionTree_algo.buildTree();
         List<String>decisionTreeResult=decisionTree_algo.testTheTree();
         double decisionTreeAccuracy=decisionTree_algo.getAccuracy();
-        //System.out.println(decisionTreeAccuracy);
         decisionTree_algo.printTree();
         
         createOutputFile(prad_test, KnnResult, knnAccuracy, naiveResult, naiveAccuracy, decisionTreeResult,
@@ -78,8 +70,7 @@ public static void main(String[] args) {
 private static void createOutputFile(Attribute prad_test, List<String> KnnResult, double knnAccuracy,
         List<String> naiveResult, double naiveAccuracy, List<String> decisionTreeResult, double decisionTreeAccuracy)
         throws FileNotFoundException, IOException {
-    File output = new File("C:/Users/hadas/workspace/Ai_ex2/output.txt");
-    //File output = new File("output.txt");
+    File output = new File("output.txt");
     FileOutputStream foutput = new FileOutputStream(output);
     BufferedWriter writeToFile = new BufferedWriter(new OutputStreamWriter(foutput));
     writeToFile.write("Num\tDt\tKNN\tnaiveBase\t\n");
@@ -103,14 +94,6 @@ private static double roundResualt(double knnAccuracy) {
     double valueKnn = Math.ceil(knnAccuracy*100) / 100;
     return valueKnn;
 }
-
-/*private static List<String> title(String[][] data_test) {
-    List<String> titles = new ArrayList<>();
-    for(int i=0; i<data_test[0].length; i++){
-        titles.add(data_test[0][i]);
-    }
-    return titles;
-}*/
 
 /**
  * The structure of the data
